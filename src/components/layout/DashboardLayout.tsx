@@ -1,44 +1,64 @@
-import Sidebar from "./Sidebar";
-import { ReactNode } from "react";
+import Link from "next/link";
+import { useRouter } from "next/router";
 
-export default function DashboardLayout({ children }: { children: ReactNode }) {
+export default function DashboardLayout({ children }: { children: React.ReactNode }) {
+  const router = useRouter();
+
+  const menu = [
+    { name: "Perfil", path: "/perfil" },
+    { name: "Progresso", path: "/progresso" },
+    { name: "Especialidades", path: "/especialidades" },
+    { name: "Devocional", path: "/devocional" },
+    { name: "Configurações", path: "/configuracoes" },
+  ];
+
+  const logout = () => {
+    document.cookie =
+      "token=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT;";
+    router.push("/login");
+  };
+
   return (
     <div className="flex min-h-screen bg-gray-100">
-      
       {/* MENU LATERAL */}
-      <Sidebar />
-
-      {/* ÁREA PRINCIPAL */}
-      <div className="flex-1 flex flex-col">
-
-        {/* CABEÇALHO BRANCO */}
-        <header className="w-full bg-white shadow-sm p-4 flex items-center justify-between">
-          
-          {/* Logo Desbravadores */}
-          <div className="flex items-center gap-3">
-            <img 
-              src="/logo-desbravadores.png"
-              alt="Desbravadores"
-              className="w-10 h-10"
-            />
-            <h1 className="text-xl font-bold text-blue-900">DBV Connect</h1>
+      <aside className="w-64 bg-white shadow-md p-6 flex flex-col justify-between">
+        <div>
+          <div className="mb-8">
+            <h2 className="text-xl font-semibold text-gray-800">DBV Connect</h2>
+            <p className="text-sm text-gray-500">Painel do usuário</p>
           </div>
 
-          {/* Perfil */}
-          <div className="flex items-center gap-3">
-            <div className="w-10 h-10 bg-yellow-500 text-white rounded-full flex items-center justify-center font-bold">
-              M
-            </div>
-            <span className="font-semibold">Marcelly</span>
-          </div>
-        </header>
+          {/* Opções do menu */}
+          <nav className="space-y-2">
+            {menu.map((item) => (
+              <Link
+                key={item.path}
+                href={item.path}
+                className={`block px-4 py-2 rounded-lg font-medium transition
+                  ${
+                    router.pathname === item.path
+                      ? "bg-blue-500 text-white"
+                      : "text-gray-700 hover:bg-gray-200"
+                  }
+                `}
+              >
+                {item.name}
+              </Link>
+            ))}
+          </nav>
+        </div>
 
-        {/* CONTEÚDO */}
-        <main className="flex-1 p-6">
-          {children}
-        </main>
+        {/* Logout */}
+        <button
+          onClick={logout}
+          className="mt-6 bg-red-500 text-white w-full py-2 rounded-lg hover:bg-red-600 transition"
+        >
+          Sair
+        </button>
+      </aside>
 
-      </div>
+      {/* CONTEÚDO PRINCIPAL */}
+      <main className="flex-1 p-8">{children}</main>
     </div>
   );
 }
