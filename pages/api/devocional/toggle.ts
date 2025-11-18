@@ -1,7 +1,7 @@
 // pages/api/devocional/toggle.ts
 import type { NextApiRequest, NextApiResponse } from "next";
 import { jwtVerify } from "jose";
-import prisma from "@/lib/prisma";
+import prisma from "lib/prisma";
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   if (req.method !== "POST") {

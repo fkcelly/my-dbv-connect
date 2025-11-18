@@ -1,6 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import { jwtVerify } from "jose";
-import prisma from "@/lib/prisma";
+import prisma from "lib/prisma";
 
 // Tipo dos registros retornados pelo banco
 type DevocionalRegistro = {
